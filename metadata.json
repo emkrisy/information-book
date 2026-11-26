@@ -1,0 +1,6 @@
+{
+  "name": "52-Week Athletic Transformation Handbook",
+  "description": "Interactive 52-week athletic recomposition, strength, running (0 to marathon), nutrition, and applied exercise science handbook with anatomical, biomechanical, and timeline infographics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
