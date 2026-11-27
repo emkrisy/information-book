@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { VolumeShell } from '../components/VolumeShell';
+import { COMPENDIUM_VOLUMES } from '../data/compendiumRegistry';
 import { PhilosophyArchitectureSvg } from '../components/infographics/PhilosophyArchitectureSvg';
 import { LifeAreasSvg } from '../components/infographics/LifeAreasSvg';
 import { WeeklyRhythmSvg } from '../components/infographics/WeeklyRhythmSvg';
@@ -68,59 +70,46 @@ export const LifeHandbookSection: React.FC = () => {
     );
   };
 
+  const volumeMeta = COMPENDIUM_VOLUMES.find((v) => v.id === 'life')!;
+
   return (
-    <div className="space-y-14">
-      {/* Volume 02 Hero & Comfortable Chapter Index */}
-      <section className="space-y-6">
-        <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 shadow-xs space-y-6">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="space-y-3 max-w-3xl">
-              <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
-                <span>Volume 02</span>
-                <span aria-hidden="true">·</span>
-                <span>45 Pages</span>
-                <span aria-hidden="true">·</span>
-                <span>Draft 2 · Discovery Survey Synthesis</span>
-              </div>
-
-              <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight leading-tight text-balance">
-                {HANDBOOK_META.title}
-              </h1>
-
-              <p className="text-base text-slate-600 leading-relaxed">
-                {HANDBOOK_META.epigraph}
-              </p>
+    <VolumeShell
+      volumeLabel={volumeMeta.number}
+      title={volumeMeta.title}
+      subtitle="45 Pages · Draft 2 · Discovery Survey Synthesis"
+      chapters={volumeMeta.chapters}
+      pdfPath={volumeMeta.pdfPath}
+      pdfLabel="Open Source PDF (45p)"
+    >
+      {/* Volume 02 Hero */}
+      <section className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 shadow-xs space-y-4">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="space-y-3 max-w-3xl">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+              <span>Volume 02</span>
+              <span aria-hidden="true">·</span>
+              <span>45 Pages</span>
+              <span aria-hidden="true">·</span>
+              <span>Draft 2 · Discovery Survey Synthesis</span>
             </div>
 
-            <a
-              href="./assets/aistudio/My_Life_Handbook__Draft_2__5a96f809.pdf"
-              target="_blank"
-              rel="noreferrer"
-              className="px-4 py-2 text-xs font-semibold text-sky-800 bg-sky-50 border border-sky-200 rounded-lg hover:bg-sky-100 transition-colors whitespace-nowrap shrink-0"
-            >
-              Open Source PDF (45p)
-            </a>
+            <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight leading-tight text-balance">
+              {HANDBOOK_META.title}
+            </h1>
+
+            <p className="text-base text-slate-600 leading-relaxed">
+              {HANDBOOK_META.epigraph}
+            </p>
           </div>
 
-          {/* Comfortable Chapter Jump Strip */}
-          <div className="border-t border-slate-100 pt-4 flex flex-wrap gap-2">
-            {[
-              { href: '#life-philosophy', label: '01 · Identity & Philosophy' },
-              { href: '#life-principles', label: '02 · Principles & Roadmap' },
-              { href: '#life-areas', label: '03 · 7 Life Areas' },
-              { href: '#life-rhythm', label: '04 · Weekly Rhythm & Playbook' },
-              { href: '#life-decisions', label: '05 · Mind, Decisions & Risk' },
-              { href: '#life-reading', label: '06 · Reading & Evidence' },
-            ].map((ch) => (
-              <a
-                key={ch.href}
-                href={ch.href}
-                className="px-3 py-1.5 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 hover:text-slate-900 rounded-lg transition-colors whitespace-nowrap shrink-0"
-              >
-                {ch.label}
-              </a>
-            ))}
-          </div>
+          <a
+            href={volumeMeta.pdfPath}
+            target="_blank"
+            rel="noreferrer"
+            className="px-4 py-2 text-xs font-semibold text-slate-800 bg-slate-100 border border-slate-300 rounded-lg hover:bg-slate-200 transition-colors whitespace-nowrap shrink-0"
+          >
+            Open Original PDF (45p)
+          </a>
         </div>
       </section>
 
@@ -774,6 +763,6 @@ export const LifeHandbookSection: React.FC = () => {
           </p>
         </div>
       </section>
-    </div>
+    </VolumeShell>
   );
 };

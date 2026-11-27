@@ -1,4 +1,4 @@
-export type VolumeId = 'library' | 'athletic' | 'life';
+export type VolumeId = 'library' | 'athletic' | 'life' | 'history';
 
 export interface VolumeMetadata {
   id: Exclude<VolumeId, 'library'>;
@@ -71,22 +71,99 @@ export const COMPENDIUM_VOLUMES: VolumeMetadata[] = [
       { id: 'life-reading', label: '06 · Reading & Evidence' },
     ],
   },
+  {
+    id: 'history',
+    number: 'Volume 03',
+    title: 'Handbook of World History',
+    subtitle: '21-chapter critical synthesis of global chronology, networks & methodology',
+    pagesLabel: '34 Pages · Parts I–IX + Glossary, Indices & 34-Work Bibliography',
+    pdfPath: './assets/aistudio/The_Comprehensive_Informational_and_Critical_Handbook_of_World_History__1__f0dcf48b.pdf',
+    summary:
+      'Polycentric synthesis uniting Afro-Eurasian, American, African, and Oceanic chronology (12,000 BCE–Present) with Trouillot archival critique, Great Divergence economics, Braudel causation, and Maritime Southeast Asia (Nusantara) history.',
+    highlights: [
+      'Interactive 7-Era Timeline & Wrigley Energy Regime Axis',
+      'Pre-1500 Four Exchange Circuits & 1450–1750 Global Convergence Schematic',
+      'Braudel Temporalities & 4-School Great Divergence Comparison Matrix',
+      'Trouillot Silencing Pipeline, 5-Dimension Diagnostic Sandbox & 19-Term Glossary',
+    ],
+    chapters: [
+      { id: 'wh-foundations', label: '01 · Historiography & Foundations' },
+      { id: 'wh-chronology', label: '02 · Global Chronology & Nusantara' },
+      { id: 'wh-networks', label: '03 · Exchange Circuits & Oceans' },
+      { id: 'wh-debates', label: '04 · Divergence & Policy Lessons' },
+      { id: 'wh-reference', label: '05 · Inquiry Sandbox & Reference' },
+    ],
+  },
 ];
 
 export const FUTURE_VOLUME_SLOTS = [
   {
-    number: 'Volume 03 · Planned',
+    number: 'Volume 04 · Planned',
     title: 'Academic & Data Analysis Dictionary',
     description: 'Thesis notes, statistical methods, BPS open-data case studies, and lecturer-path literature maps.',
   },
   {
-    number: 'Volume 04 · Planned',
+    number: 'Volume 05 · Planned',
     title: 'Reading Summaries & Concept Glossary',
     description: 'One-page notes after every completed book—al-Ghazali, Ibn Rushd, Frankl, Epictetus, Gottman, and Bogle.',
   },
 ];
 
 export const DICTIONARY_ENTRIES: DictionaryEntry[] = [
+  {
+    id: 'polycentric-world-history',
+    term: 'Polycentric Global History',
+    volume: 'history',
+    volumeLabel: 'Vol 03 · World History',
+    chapterId: 'wh-foundations',
+    category: 'Historiography',
+    definition: 'Approaches world history through multicentered innovation, reciprocal comparison, and transregional networks rather than Eurocentric stages (McNeill, Hodgson, Abu-Lughod, Pomeranz).',
+  },
+  {
+    id: 'trouillot-archival-silences',
+    term: "Trouillot's Four Archival Silences",
+    volume: 'history',
+    volumeLabel: 'Vol 03 · World History',
+    chapterId: 'wh-foundations',
+    category: 'Methodology',
+    definition: 'Power enters historical knowledge at four distinct moments: fact creation (sources), fact assembly (archives), fact retrieval (narratives), and retrospective significance.',
+  },
+  {
+    id: 'great-divergence',
+    term: 'The Great Divergence (Four Schools)',
+    volume: 'history',
+    volumeLabel: 'Vol 03 · World History',
+    chapterId: 'wh-debates',
+    category: 'Economic History',
+    definition: 'Compares California School (coal + ghost acreage), Neo-Institutionalist (property law), Factor-Price (high urban wages vs cheap coal), and Protectionist/War Capitalism explanations.',
+  },
+  {
+    id: 'braudel-longue-duree',
+    term: "Braudel's Three Temporalities",
+    volume: 'history',
+    volumeLabel: 'Vol 03 · World History',
+    chapterId: 'wh-debates',
+    category: 'Causation',
+    definition: 'Nests geographical longue durée (millennia) beneath structural conjunctures (centuries–decades) and surface événementielle events—balanced against subaltern agency.',
+  },
+  {
+    id: 'manila-silver-circuit',
+    term: 'Manila–Acapulco Silver Circuit',
+    volume: 'history',
+    volumeLabel: 'Vol 03 · World History',
+    chapterId: 'wh-networks',
+    category: 'Global Trade',
+    definition: 'Early modern monetary loop linking Andean Potosí silver (mit’a labor) through Acapulco and Manila galleons to Ming China’s Single Whip silver tax demand.',
+  },
+  {
+    id: 'nusantara-tambora-bandung',
+    term: 'Nusantara, 1815 Tambora & Bandung',
+    volume: 'history',
+    volumeLabel: 'Vol 03 · World History',
+    chapterId: 'wh-chronology',
+    category: 'Regional Synthesis',
+    definition: 'Maritime Southeast Asia bridged monsoon port commerce, VOC Batavia sea-law debates (Grotius 1609), global cooling after 1815 Mount Tambora, and 1955 Bandung Non-Alignment.',
+  },
   {
     id: 'khalifah-scholar',
     term: 'Khalifah-Scholar Way',

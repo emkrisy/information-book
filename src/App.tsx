@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { BodyRecompSvg } from './components/infographics/BodyRecompSvg';
 import { GitHubPublishModal } from './components/GitHubPublishModal';
 import { CompendiumHome } from './components/CompendiumHome';
+import { VolumeShell } from './components/VolumeShell';
 import { TimelineSection } from './sections/TimelineSection';
 import { StrengthSection } from './sections/StrengthSection';
 import { RunningSection } from './sections/RunningSection';
 import { NutritionSection } from './sections/NutritionSection';
 import { ScienceSection } from './sections/ScienceSection';
 import { LifeHandbookSection } from './sections/LifeHandbookSection';
+import { WorldHistorySection } from './sections/WorldHistorySection';
 import { PROFILE_METRICS, BODY_ASSESSMENT, REALISTIC_EXPECTATIONS } from './data/handbookData';
 import { VolumeId, COMPENDIUM_VOLUMES } from './data/compendiumRegistry';
 
@@ -22,6 +24,8 @@ export default function App() {
       setActiveVolume('athletic');
     } else if (hash === 'life' || hash.startsWith('life-')) {
       setActiveVolume('life');
+    } else if (hash === 'history' || hash.startsWith('wh-')) {
+      setActiveVolume('history');
     }
   }, []);
 
@@ -41,11 +45,13 @@ export default function App() {
     }, 60);
   };
 
+  const athleticVolume = COMPENDIUM_VOLUMES[0];
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
-      {/* Top Navigation Bar (Strict 3-Zone Contract) */}
+      {/* Single Sticky Navigation Bar (Strict 3-Zone Contract, Zero Stacked Bars) */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-xs border-b border-slate-200">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-8">
+        <div className="max-w-[1320px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4 sm:gap-8">
           <button
             onClick={() => handleOpenVolume('library')}
             className="text-lg font-bold tracking-tight text-slate-900 whitespace-nowrap shrink-0 font-display cursor-pointer"
@@ -53,43 +59,47 @@ export default function App() {
             Life Dictionary
           </button>
 
+          {/* Zone 2 Desktop Links */}
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
-            <button
-              onClick={() => handleOpenVolume('library')}
-              className={`transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-                activeVolume === 'library'
-                  ? 'text-sky-700 font-semibold underline underline-offset-8 decoration-2'
-                  : 'hover:text-slate-900'
-              }`}
-            >
-              Compendium
-            </button>
-            <button
-              onClick={() => handleOpenVolume('athletic')}
-              className={`transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-                activeVolume === 'athletic'
-                  ? 'text-sky-700 font-semibold underline underline-offset-8 decoration-2'
-                  : 'hover:text-slate-900'
-              }`}
-            >
-              01 · Athletic Plan
-            </button>
-            <button
-              onClick={() => handleOpenVolume('life')}
-              className={`transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
-                activeVolume === 'life'
-                  ? 'text-sky-700 font-semibold underline underline-offset-8 decoration-2'
-                  : 'hover:text-slate-900'
-              }`}
-            >
-              02 · Life Handbook
-            </button>
+            {[
+              { id: 'library' as const, label: 'Library' },
+              { id: 'athletic' as const, label: '01 · Athletic' },
+              { id: 'life' as const, label: '02 · Life' },
+              { id: 'history' as const, label: '03 · World History' },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleOpenVolume(item.id)}
+                className={`transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                  activeVolume === item.id
+                    ? 'text-sky-700 font-semibold underline underline-offset-8 decoration-2'
+                    : 'hover:text-slate-900'
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
           </nav>
+
+          {/* Zone 2 Mobile Compact Switcher (Lives inside the single h-16 header—no second bar!) */}
+          <div className="md:hidden min-w-0">
+            <select
+              aria-label="Select volume"
+              value={activeVolume}
+              onChange={(e) => handleOpenVolume(e.target.value as VolumeId)}
+              className="px-2.5 py-1.5 text-xs font-medium text-slate-800 bg-slate-100 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-600 cursor-pointer"
+            >
+              <option value="library">Library Home</option>
+              <option value="athletic">01 · Athletic Plan</option>
+              <option value="life">02 · Life Handbook</option>
+              <option value="history">03 · World History</option>
+            </select>
+          </div>
 
           <div className="shrink-0">
             <button
               onClick={() => setIsPublishModalOpen(true)}
-              className="px-4 py-2 text-xs font-semibold text-white bg-slate-900 rounded-lg hover:bg-slate-800 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="px-3.5 sm:px-4 py-2 text-xs font-semibold text-white bg-slate-900 rounded-lg hover:bg-slate-800 transition-colors whitespace-nowrap shrink-0 cursor-pointer"
             >
               Publish to GitHub
             </button>
@@ -97,53 +107,23 @@ export default function App() {
         </div>
       </header>
 
-      <main className="flex-1 max-w-[1240px] w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-10">
-        {/* Non-sticky mobile volume switcher (keeps mobile sticky height strictly 64px) */}
-        <div className="md:hidden flex items-center gap-1 p-1 bg-slate-200/70 rounded-lg overflow-x-auto">
-          {[
-            { id: 'library' as const, label: 'Compendium' },
-            { id: 'athletic' as const, label: '01 · Athletic' },
-            { id: 'life' as const, label: '02 · Life Handbook' },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => handleOpenVolume(tab.id)}
-              className={`flex-1 px-3 py-1.5 text-xs font-medium rounded-md whitespace-nowrap shrink-0 cursor-pointer ${
-                activeVolume === tab.id ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
-
+      <main className="flex-1 max-w-[1320px] w-full mx-auto px-4 sm:px-6 py-8 sm:py-10">
         {activeVolume === 'library' && <CompendiumHome onOpenVolume={handleOpenVolume} />}
 
         {activeVolume === 'life' && <LifeHandbookSection />}
 
-        {activeVolume === 'athletic' && (
-          <div className="space-y-16">
-            {/* Comfortable Chapter Index Strip for Volume 01 */}
-            <section id="overview" className="scroll-mt-20 space-y-6">
-              <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs flex flex-wrap items-center justify-between gap-3">
-                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
-                  <span className="font-mono font-semibold text-sky-700">Volume 01</span>
-                  <span aria-hidden="true">·</span>
-                  <span className="font-medium text-slate-800">52-Week Athletic Transformation</span>
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {COMPENDIUM_VOLUMES[0].chapters.map((ch) => (
-                    <a
-                      key={ch.id}
-                      href={`#${ch.id}`}
-                      className="px-2.5 py-1 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-md transition-colors whitespace-nowrap shrink-0"
-                    >
-                      {ch.label}
-                    </a>
-                  ))}
-                </div>
-              </div>
+        {activeVolume === 'history' && <WorldHistorySection />}
 
+        {activeVolume === 'athletic' && (
+          <VolumeShell
+            volumeLabel={athleticVolume.number}
+            title={athleticVolume.title}
+            subtitle="59 Pages · Personalised (164 cm, 61 kg) · Gym & Home"
+            chapters={athleticVolume.chapters}
+            pdfPath={athleticVolume.pdfPath}
+            pdfLabel="Open Source PDF (59p)"
+          >
+            <section id="overview" className="scroll-mt-20 space-y-6">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
                 {/* Left Editorial Intro */}
                 <div className="lg:col-span-5 flex flex-col justify-between bg-white border border-slate-200 rounded-xl p-6 shadow-xs">
@@ -174,7 +154,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="mt-6 pt-4 border-t border-slate-100 flex flex-wrap items-center gap-3">
+                  <div className="mt-6 pt-4 border-t border-slate-100 flex flex-wrap items-center gap-2.5">
                     <a
                       href="#timeline"
                       className="px-4 py-2 text-xs font-semibold text-white bg-sky-700 rounded-lg hover:bg-sky-800 transition-colors whitespace-nowrap shrink-0"
@@ -186,6 +166,14 @@ export default function App() {
                       className="px-4 py-2 text-xs font-semibold text-slate-700 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors whitespace-nowrap shrink-0"
                     >
                       Muscle &amp; Form Atlas
+                    </a>
+                    <a
+                      href={athleticVolume.pdfPath}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="px-3.5 py-2 text-xs font-semibold text-slate-800 bg-white border border-slate-300 rounded-lg hover:bg-slate-100 transition-colors whitespace-nowrap shrink-0"
+                    >
+                      Original PDF (59p)
                     </a>
                   </div>
                 </div>
@@ -291,12 +279,12 @@ export default function App() {
             <RunningSection />
             <NutritionSection />
             <ScienceSection />
-          </div>
+          </VolumeShell>
         )}
       </main>
 
       <footer className="border-t border-slate-200 bg-white mt-12">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
+        <div className="max-w-[1320px] mx-auto px-4 sm:px-6 py-6 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-500">
           <div>
             <span className="font-semibold text-slate-800">Dictionary of My Life · Personal Compendium</span>
             <span aria-hidden="true" className="mx-2">·</span>
@@ -318,6 +306,14 @@ export default function App() {
               className="text-sky-700 font-medium hover:underline"
             >
               Vol 02 PDF
+            </a>
+            <a
+              href="./assets/aistudio/The_Comprehensive_Informational_and_Critical_Handbook_of_World_History__1__f0dcf48b.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="text-sky-700 font-medium hover:underline"
+            >
+              Vol 03 PDF
             </a>
             <button
               onClick={() => setIsPublishModalOpen(true)}
